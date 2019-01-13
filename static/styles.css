@@ -1,0 +1,7 @@
+.output {
+  display: none;
+  background-color: pink;
+  width: 40%;
+  margin: 100px;
+  padding: 20px;
+}

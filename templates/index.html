@@ -1,0 +1,56 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Test test</title>
+  <meta name="description" content="Test test">
+  <meta name="author" content="Alice Liang">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="static/styles.css">
+
+</head>
+
+<body>
+<h1> Letter Boxed Solver </h1>
+
+<div class="entry">
+  <form>
+    Left: <input type='text' maxlength='3' id='left'><br>
+    Top: <input type='text' maxlength='3' id='top'><br>
+    Right: <input type='text' maxlength='3' id='right'><br>
+    Bottom: <input type='text' maxlength='3' id='bottom'><br>
+    <button type='button' id ='retrieve'>Submit</button>
+    <div class='output' id='results'></div>
+  </form>
+</div>
+
+</body>
+
+<script>
+  $(document).ready(function() {
+     $('#retrieve').click(function(){
+         var l = $('#left').val();
+         var t = $('#top').val();
+         var r = $('#right').val();
+         var b = $('#bottom').val();
+
+         $.ajax({
+           url: "/transform",
+           type: "get",
+           data: {left: l, top: t, right: r, bottom: b},
+           success: function(response) {
+             console.log(response);
+           $("#results").show();
+           $("#results").html(response.html);
+          },
+          error: function(xhr) {
+            //Do Something to handle error
+       }
+       });
+     });
+  });
+</script>
+
+</html>
