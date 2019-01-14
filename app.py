@@ -26,7 +26,7 @@ def get_words(pos, chars):
         return [w for w in valid_words if w not in toss]
 
 # find one word solutions
-def one_word_solution(word_list):
+def one_word_solution(word_list, chars):
     return [w for w in word_list if set(w) == chars]
 
 # find two word solutions
@@ -42,7 +42,7 @@ def two_word_solution(word_list, chars):
     return output
 
 # find three word solutions
-def three_word_solution(word_list):
+def three_word_solution(word_list, chars):
     output = []
     for i in word_list:
         seconds = [w for w in word_list if w[0] == i[-1] and w != i]
@@ -54,20 +54,26 @@ def three_word_solution(word_list):
                     output.append([i,j,k])
     return output
 
-def display_answers(sets):
+def display_answers(sets, num):
     if sets == []:
-        return "No answers found!"
+        num_map = {'1': 'one', '2': 'two', '3': 'three'}
+        return "No " + num_map[num] + "-word solutions found!"
     else:
         output = "<strong>Try these answers!</strong><p>"
         for s in sets:
-            output += "<ul>" + s[0] + " — " + s[1] + "</ul>"
+            output += "<ul>" + " — ".join(s) + "</ul>"
         return output
 
-def solve_puzzle(pos):
+def solve_puzzle(pos, num):
     chars = set(pos.keys())
     wordset = get_words(pos, chars)
-    answers = two_word_solution(wordset, chars)
-    return display_answers(answers)
+    if num == "1":
+        answers = one_word_solution(wordset, chars)
+    elif num == "3":
+        answers = three_word_solution(wordset, chars)
+    else:
+        answers = two_word_solution(wordset, chars)
+    return display_answers(answers, num)
 
 @app.route('/')
 def home():
@@ -90,9 +96,10 @@ def transform():
     top = get_letters('top')
     right = get_letters('right')
     bottom = get_letters('bottom')
+    number = request.args.get('number')
     pos = {**left, **top, **right, **bottom}
     if len(pos)==12:
-        result = solve_puzzle(pos)
+        result = solve_puzzle(pos, number)
         return jsonify({'html': str(result)})
     else:
         return jsonify({'html': "Please input 3 distinct letters per side!"})

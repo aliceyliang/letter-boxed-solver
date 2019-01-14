@@ -4,11 +4,11 @@
 <head>
   <meta charset="utf-8">
 
-  <title>Test test</title>
+  <title>Letter Boxed Solver</title>
   <meta name="description" content="Letter Boxed Solver">
   <meta name="author" content="Alice Liang">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <link rel="stylesheet" href="static/styles.css?version=50">
+  <link rel="stylesheet" href="static/styles.css?version=60">
 
 </head>
 
@@ -28,6 +28,9 @@
     Top: <input type='text' maxlength='3' id='top'><p>
     Right: <input type='text' maxlength='3' id='right'><p>
     Bottom: <input type='text' maxlength='3' id='bottom'><p>
+    Solve in this # of words: <input type='radio' name='num' value='1'>1 (rare)
+                <input type='radio' name='num' value='2' checked='checked'>2
+                <input type='radio' name='num' value='3'>3 (slow)<p>
     <button type='button' id ='retrieve'>Solve</button>
   </form>
   </div>
@@ -44,11 +47,12 @@
          var t = $('#top').val();
          var r = $('#right').val();
          var b = $('#bottom').val();
+         var num = $('input[name=num]:checked').val();
 
          $.ajax({
            url: "/transform",
            type: "get",
-           data: {left: l, top: t, right: r, bottom: b},
+           data: {left: l, top: t, right: r, bottom: b, number: num},
            success: function(response) {
              console.log(response);
            $("#results").show();

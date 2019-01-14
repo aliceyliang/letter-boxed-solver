@@ -1,8 +1,8 @@
 body {
   background-color: #f7f7f7;
   font-family: helvetica, sans-serif;
-  font-size: 40px;
-  padding: 20px;
+  font-size: 12px;
+  padding: 10px auto;
 }
 
 .left, .right {
@@ -12,6 +12,7 @@ body {
     top:0;
     color: black;
     padding: 100;
+    overflow: scroll;
 }
 .left {
     left:0;
@@ -34,44 +35,38 @@ body {
 
 .entry {
   position: relative;
-  margin: 100px;
-  padding: 20px;
+  margin: 30px;
 }
 
 h1 {
-  margin: 50px;
-  padding: 20px;
-  font-size: 80px;
+  margin: 30px;
+  font-size: 30px;
 }
 
 .desc {
-  margin: 50px;
-  padding: 20px;
-  font-size: 40px;
+  margin: 0 30px;
   text-justify: inter-word;
 }
-
 
 .output {
   position: relative;
   display: none;
-  margin: 200px;
-  padding: 20px;
+  margin: 30px;
 }
 
-input {
+/* input {
   height: 60px;
   font-size: 40px;
-}
+} */
 
 button {
-  border-radius: 10px;
-  padding: 20px;
-  font-size: 40px;
+  border-radius: 6px;
+  padding: 2px;
+  font-size: 14px;
   background-color: #edada1;
   color: white;
-  width: 300px;
-  height: 80px;
+  width: 100px;
+  height: 30px;
 }
 
 a:link, a:visited {
