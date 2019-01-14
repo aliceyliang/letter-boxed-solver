@@ -1,7 +1,85 @@
-.output {
-  display: none;
-  background-color: pink;
-  width: 40%;
+body {
+  background-color: #f7f7f7;
+  font-family: helvetica, sans-serif;
+  font-size: 40px;
+  padding: 20px;
+}
+
+.left, .right {
+    width:50%;
+    height:100%;
+    position:fixed;
+    top:0;
+    color: black;
+    padding: 100;
+}
+.left {
+    left:0;
+}
+.right {
+    right:0;
+    background-color: #edada1;
+}
+@media screen and (max-width: 900px) {
+    .left, .right {
+        left:0;
+        height:50%;
+        width:100%;
+    }
+    .right {
+      bottom:0;
+      top:auto;
+    }
+}
+
+.entry {
+  position: relative;
   margin: 100px;
   padding: 20px;
+}
+
+h1 {
+  margin: 50px;
+  padding: 20px;
+  font-size: 80px;
+}
+
+.desc {
+  margin: 50px;
+  padding: 20px;
+  font-size: 40px;
+  text-justify: inter-word;
+}
+
+
+.output {
+  position: relative;
+  display: none;
+  margin: 200px;
+  padding: 20px;
+}
+
+input {
+  height: 60px;
+  font-size: 40px;
+}
+
+button {
+  border-radius: 10px;
+  padding: 20px;
+  font-size: 40px;
+  background-color: #edada1;
+  color: white;
+  width: 300px;
+  height: 80px;
+}
+
+a:link, a:visited {
+  text-decoration: none;
+  color: black;
+}
+
+a:hover, a:active {
+  text-decoration: bold;
+  color: #edada1;
 }

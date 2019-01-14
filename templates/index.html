@@ -5,27 +5,36 @@
   <meta charset="utf-8">
 
   <title>Test test</title>
-  <meta name="description" content="Test test">
+  <meta name="description" content="Letter Boxed Solver">
   <meta name="author" content="Alice Liang">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <link rel="stylesheet" href="static/styles.css">
+  <link rel="stylesheet" href="static/styles.css?version=50">
 
 </head>
 
 <body>
-<h1> Letter Boxed Solver </h1>
+<div class="left">
+  <h1> Letter Boxed Solver </h1>
+  <div class="desc">
+    <a href="https://www.nytimes.com/puzzles/letter-boxed" target="_blank">Letter Boxed is a game from The New York Times.</a>
+    You make words by connecting letters that are not on the same side as each other.
+    This way, you travel around the box, and you win when you use all the letters.
+    But you might get frustrated and need the answers from time to time!
+  </div>
+  <div class="entry">
 
-<div class="entry">
   <form>
-    Left: <input type='text' maxlength='3' id='left'><br>
-    Top: <input type='text' maxlength='3' id='top'><br>
-    Right: <input type='text' maxlength='3' id='right'><br>
-    Bottom: <input type='text' maxlength='3' id='bottom'><br>
-    <button type='button' id ='retrieve'>Submit</button>
-    <div class='output' id='results'></div>
+    Left: <input type='text' maxlength='3' id='left'><p>
+    Top: <input type='text' maxlength='3' id='top'><p>
+    Right: <input type='text' maxlength='3' id='right'><p>
+    Bottom: <input type='text' maxlength='3' id='bottom'><p>
+    <button type='button' id ='retrieve'>Solve</button>
   </form>
+  </div>
 </div>
-
+<div class="right">
+  <div class='output' id='results'></div>
+</div>
 </body>
 
 <script>

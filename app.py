@@ -25,6 +25,10 @@ def get_words(pos, chars):
                     num += 1
         return [w for w in valid_words if w not in toss]
 
+# find one word solutions
+def one_word_solution(word_list):
+    return [w for w in word_list if set(w) == chars]
+
 # find two word solutions
 def two_word_solution(word_list, chars):
     output = []
@@ -37,11 +41,27 @@ def two_word_solution(word_list, chars):
                 output.append([word,m])
     return output
 
-def display_answers(sets):
-    output = ""
-    for s in sets:
-        output += "<ul>" + s[0] + " — " + s[1] + "</ul>"
+# find three word solutions
+def three_word_solution(word_list):
+    output = []
+    for i in word_list:
+        seconds = [w for w in word_list if w[0] == i[-1] and w != i]
+        for j in seconds:
+            thirds = [w for w in word_list if w[0] == j[-1] and w != j and w != i]
+            for k in thirds:
+                triple = i + j + k
+                if set(triple) == chars:
+                    output.append([i,j,k])
     return output
+
+def display_answers(sets):
+    if sets == []:
+        return "No answers found!"
+    else:
+        output = "<strong>Try these answers!</strong><p>"
+        for s in sets:
+            output += "<ul>" + s[0] + " — " + s[1] + "</ul>"
+        return output
 
 def solve_puzzle(pos):
     chars = set(pos.keys())
@@ -75,7 +95,7 @@ def transform():
         result = solve_puzzle(pos)
         return jsonify({'html': str(result)})
     else:
-        return jsonify({'html': "Please input 3 distinct letters per side"})
+        return jsonify({'html': "Please input 3 distinct letters per side!"})
 
 if __name__ == "__main__":
     app.run(debug=True)
