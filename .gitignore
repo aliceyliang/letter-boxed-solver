@@ -1,1 +1,7 @@
 .Python
+bin
+lib
+include
+venv
+
+.DS_Store

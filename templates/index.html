@@ -8,12 +8,13 @@
   <meta name="description" content="Letter Boxed Solver">
   <meta name="author" content="Alice Liang">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <link rel="stylesheet" href="static/styles.css?version=60">
+  <link rel="stylesheet" href="static/styles.css?version=73">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
 </head>
 
 <body>
-<div class="left">
+<div class="left" id='leftSide'>
   <h1> Letter Boxed Solver </h1>
   <div class="desc">
     <a href="https://www.nytimes.com/puzzles/letter-boxed" target="_blank">Letter Boxed is a game from The New York Times.</a>
@@ -24,10 +25,10 @@
   <div class="entry">
 
   <form>
-    Left: <input type='text' maxlength='3' id='left'><p>
-    Top: <input type='text' maxlength='3' id='top'><p>
-    Right: <input type='text' maxlength='3' id='right'><p>
-    Bottom: <input type='text' maxlength='3' id='bottom'><p>
+    Left: <input type='text' maxlength='3' id='leftInput'><p>
+    Top: <input type='text' maxlength='3' id='topInput'><p>
+    Right: <input type='text' maxlength='3' id='rightInput'><p>
+    Bottom: <input type='text' maxlength='3' id='bottomInput'><p>
     Solve in this # of words: <input type='radio' name='num' value='1'>1 (rare)
                 <input type='radio' name='num' value='2' checked='checked'>2
                 <input type='radio' name='num' value='3'>3 (slow)<p>
@@ -35,18 +36,25 @@
   </form>
   </div>
 </div>
-<div class="right">
-  <div class='output' id='results'></div>
+<div class="right" id='rightSide'>
+  <canvas class="in"></canvas>
+  <div class='output' id='results'>
+  </div>
 </div>
+
+<div class="cursor">
+  <span> Click me </span>
+</div>
+
 </body>
 
 <script>
   $(document).ready(function() {
      $('#retrieve').click(function(){
-         var l = $('#left').val();
-         var t = $('#top').val();
-         var r = $('#right').val();
-         var b = $('#bottom').val();
+         var l = $('#leftInput').val();
+         var t = $('#topInput').val();
+         var r = $('#rightInput').val();
+         var b = $('#bottomInput').val();
          var num = $('input[name=num]:checked').val();
 
          $.ajax({
@@ -63,7 +71,99 @@
        }
        });
      });
+
+     // drawing
+     const cursor = document.querySelector('div.cursor');
+     let isMouseDown = false;
+
+     const growCursor = function() {
+        cursor.classList.add("is-down");
+        cursor.innerHTML = '<span>Scratch to reveal answers!</span>';
+      }
+
+      const shrinkCursor = function() {
+        cursor.classList.remove("is-down");
+      }
+
+      const moveCursor = function(x,y) {
+        cursor.style.left = x + "px";
+        cursor.style.top = y + "px";
+      }
+
+     var canvas = document.querySelector('canvas.in');
+     var div = document.getElementById('rightSide');
+
+     const setupCanvas = function(canvas) {
+
+         const dpi = window.devicePixelRatio;
+         canvas.width = div.offsetWidth;
+         canvas.height = div.offsetHeight;
+         canvas.style.width = "100%";
+         canvas.style.height = "100%";
+
+         console.log(canvas.getBoundingClientRect());
+
+         // set up context
+         const context = canvas.getContext("2d");
+         // context.scale(dpi, dpi);
+
+         context.strokeStyle = 'red';
+         context.lineWidth = 80;
+         context.lineCap = 'round';
+         context.lineJoin = 'round';
+
+         context.shadowBlur = 10;
+         context.shadowColor = context.strokeStyle;
+
+         // context.rect(halfw,0,w,h);
+         // context.fill();
+
+       };
+
+       const startDraw = function(c, x, y) {
+         const context = c.getContext("2d");
+         context.moveTo(x,y);
+         context.beginPath();
+       }
+
+       const moveDraw = function(c, x, y) {
+         if (isMouseDown) {
+           const context = c.getContext("2d");
+           // context.rect(x-div.offsetWidth, y, 60, 40)
+           // context.fill();
+           context.lineTo(x-div.offsetWidth,y);
+           context.stroke();
+         }
+       };
+
+       setupCanvas(canvas);
+
+       $(document).on('mousedown',function(event) {
+         console.log('hello');
+         isMouseDown = true;
+         growCursor();
+         startDraw(canvas, event.pageX, event.pageY);
+         // startDraw(canvasOut, event.pageX, event.pageY);
+       });
+
+       $(document).mouseup(function(event) {
+         event.preventDefault();
+         console.log('bye');
+         isMouseDown = false;
+         shrinkCursor();
+       });
+
+       $(document).on('mousemove',function(event) {
+         moveCursor(event.pageX, event.pageY);
+       });
+
+       $(document).mousemove(function(event){
+         moveDraw(canvas, event.pageX, event.pageY);
+         // moveDraw(canvasOut, event.pageX, event.pageY);
+       })
+
   });
+
 </script>
 
 </html>

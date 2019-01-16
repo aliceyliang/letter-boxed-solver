@@ -1,7 +1,7 @@
 body {
   background-color: #f7f7f7;
-  font-family: helvetica, sans-serif;
-  font-size: 12px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 13px;
   padding: 10px auto;
 }
 
@@ -41,18 +41,30 @@ body {
 h1 {
   margin: 30px;
   font-size: 30px;
+  font-weight: bold;
 }
 
 .desc {
   margin: 0 30px;
   text-justify: inter-word;
+  padding-right: 50px;
 }
 
 .output {
   position: relative;
   display: none;
   margin: 30px;
+  font-size: 20px;
 }
+
+/* canvas {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%; */
+  /* mix-blend-mode: lighten; */
+/* } */
 
 /* input {
   height: 60px;
@@ -77,4 +89,33 @@ a:link, a:visited {
 a:hover, a:active {
   text-decoration: bold;
   color: #edada1;
+}
+
+div.cursor {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  transform:translate(-50%,-50%);
+	transition: width 0.25s, height 0.25s;
+}
+
+div.cursor.is-down {
+  width: 80px;
+  height: 80px;
+}
+
+div.cursor span {
+  position:  absolute;
+  top: 20px;
+  left: 20px;
+  width: 200px;
+}
+
+div.cursor.is-down span {
+  top : 100px;
+  left: 100px;
 }

@@ -7,8 +7,8 @@ def get_letters(side):
   let_list = list(let.upper())
   return dict((s, side) for s in let_list)
 
-def get_words(pos, chars):
-    with open("words.txt") as word_file:
+def get_words(file, pos, chars):
+    with open(file) as word_file:
         actual_words = list(word.strip().upper() for word in word_file)
         valid_words = [w for w in actual_words if len(w)>=3 and set(w)-chars==set()]
 
@@ -64,15 +64,23 @@ def display_answers(sets, num):
             output += "<ul>" + " — ".join(s) + "</ul>"
         return output
 
+def find_answers(wordset, chars, num):
+    if num == "1":
+        return one_word_solution(wordset, chars)
+    elif num == "3":
+        return three_word_solution(wordset, chars)
+    else:
+        return two_word_solution(wordset, chars)
+
 def solve_puzzle(pos, num):
     chars = set(pos.keys())
-    wordset = get_words(pos, chars)
-    if num == "1":
-        answers = one_word_solution(wordset, chars)
-    elif num == "3":
-        answers = three_word_solution(wordset, chars)
-    else:
-        answers = two_word_solution(wordset, chars)
+    wordset = get_words("words.txt", pos, chars)
+    answers = find_answers(wordset, chars, num)
+    # if no basic answers available, check more extensive list of words
+    if answers == []:
+        print('here')
+        hard_wordset = get_words("words_alpha.txt", pos, chars)
+        answers = find_answers(hard_wordset, chars, num)
     return display_answers(answers, num)
 
 @app.route('/')
