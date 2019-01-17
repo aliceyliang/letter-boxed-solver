@@ -1,9 +1,138 @@
 body {
-  background-color: #f7f7f7;
-  font-family: 'Roboto', sans-serif;
-  font-size: 13px;
-  padding: 10px auto;
+	font-family: Arial;
+	font-size: 16px;
+	line-height: 1.5;
+/*   height: 100vh; */
+  /* cursor: none; */
+
+/* 	background-color: #ffffff;
+	color: #333333;
+	margin: 40px auto 40px auto;
+	width: 620px; */
 }
+
+.right {
+    width:50%;
+    height:100%;
+    position:fixed;
+    top:0;
+    right:0;
+    color: black;
+    padding: 100;
+    overflow: scroll;
+}
+
+.desc {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+}
+
+div.cursor {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  background-color: #edada1;
+  border-radius: 50%;
+  transform:translate(-50%,-50%);
+	transition: width 0.25s, height 0.25s;
+  display: none;
+}
+
+div.cursor.is-down {
+  width: 80px;
+  height: 80px;
+  display: block;
+}
+
+div.cursor span {
+  position:  absolute;
+  top: 20px;
+  left: 20px;
+  width: 200px;
+}
+
+div.cursor.is-down span {
+  top : 100px;
+  left: 100px;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  mix-blend-mode: lighten;
+}
+
+/* section {
+  padding: 80px;
+  font-size: 80px;
+  font-weight: 700;
+  line-height: 1.1;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  user-select: none;
+}
+ */
+div.pattern {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #d4d4d4;
+  background-image: url(pattern.svg);
+  background-size: 450px 450px;
+  z-index: 0;
+}
+
+section.scratched-out {
+  right: 0;
+  width: 50%;
+  mix-blend-mode: darken;
+}
+
+section.scratched-in {
+  right: 0;
+  width: 50%;
+  mix-blend-mode: darken;
+}
+
+div.lineup {
+  background-color: #dadaff;
+  position: absolute;
+	user-select: none;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+  padding-top: 20px;
+  overflow: scroll;
+}
+
+div.lineup span {
+  padding: 20px;
+}
+
+div.lineup img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+
+
+/* new */
 
 .left, .right {
     width:50%;
@@ -19,7 +148,7 @@ body {
 }
 .right {
     right:0;
-    background-color: #edada1;
+    /* background-color: #edada1; */
 }
 @media screen and (max-width: 900px) {
     .left, .right {
@@ -39,46 +168,19 @@ body {
 }
 
 h1 {
+	position: relative;
   margin: 30px;
   font-size: 30px;
   font-weight: bold;
 }
 
 .desc {
+	position: relative;
   margin: 0 30px;
   text-justify: inter-word;
-  padding-right: 50px;
-}
-
-.output {
-  position: relative;
-  display: none;
-  margin: 30px;
-  font-size: 20px;
-}
-
-/* canvas {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 50%;
-  height: 100%; */
-  /* mix-blend-mode: lighten; */
-/* } */
-
-/* input {
-  height: 60px;
-  font-size: 40px;
-} */
-
-button {
-  border-radius: 6px;
-  padding: 2px;
-  font-size: 14px;
-  background-color: #edada1;
-  color: white;
-  width: 100px;
-  height: 30px;
+  padding-right: 0px;
+	height: 25%;
+	width: 80%;
 }
 
 a:link, a:visited {
@@ -91,31 +193,7 @@ a:hover, a:active {
   color: #edada1;
 }
 
-div.cursor {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 10px;
-  height: 10px;
-  background-color: #ffffff;
-  border-radius: 50%;
-  transform:translate(-50%,-50%);
-	transition: width 0.25s, height 0.25s;
-}
-
-div.cursor.is-down {
-  width: 80px;
-  height: 80px;
-}
-
-div.cursor span {
-  position:  absolute;
-  top: 20px;
-  left: 20px;
-  width: 200px;
-}
-
-div.cursor.is-down span {
-  top : 100px;
-  left: 100px;
+input {
+  height: 22px;
+  font-size: 14px;
 }

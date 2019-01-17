@@ -62,7 +62,7 @@ def display_answers(sets, num):
         output = "<strong>Try these answers!</strong><p>"
         for s in sets:
             output += "<ul>" + " — ".join(s) + "</ul>"
-        return output
+        return "<span>" + output + "</span>"
 
 def find_answers(wordset, chars, num):
     if num == "1":
