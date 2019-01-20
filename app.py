@@ -82,12 +82,12 @@ def solve_puzzle(pos, num):
         hard_wordset = get_words("words_alpha.txt", pos, chars)
         answers = find_answers(hard_wordset, chars, num)
     return display_answers(answers, num)
+#
+# @app.route('/')
+# def home():
+#     return "hello hello"
 
-@app.route('/')
-def home():
-    return "hello hello"
-
-@app.route('/index', methods=['GET','POST'])
+@app.route('/', methods=['GET','POST'])
 def index():
     # error = None
     # if request.method == 'POST':
