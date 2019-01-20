@@ -2,14 +2,15 @@ body {
 	font-family: Arial;
 	font-size: 16px;
 	line-height: 1.5;
-/*   height: 100vh; */
-  /* cursor: none; */
-
-/* 	background-color: #ffffff;
-	color: #333333;
-	margin: 40px auto 40px auto;
-	width: 620px; */
+	overflow: hidden;
+	user-select: none;
 }
+
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
+
 
 .right {
     width:50%;
@@ -27,7 +28,6 @@ body {
   top: 0;
   left: 0;
   width: 50%;
-  height: 100%;
 }
 
 div.cursor {
@@ -36,7 +36,7 @@ div.cursor {
   left: 50%;
   width: 10px;
   height: 10px;
-  background-color: #edada1;
+  background-color: #edc5bd;
   border-radius: 50%;
   transform:translate(-50%,-50%);
 	transition: width 0.25s, height 0.25s;
@@ -70,27 +70,14 @@ canvas {
   mix-blend-mode: lighten;
 }
 
-/* section {
-  padding: 80px;
-  font-size: 80px;
-  font-weight: 700;
-  line-height: 1.1;
-
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  user-select: none;
-}
- */
 div.pattern {
   position: absolute;
   top: 0;
   right: 0;
   width: 100%;
   height: 100%;
-  background-color: #d4d4d4;
-  background-image: url(pattern.svg);
+  background-color: #edada1;
+  background-image: url(test.png);
   background-size: 450px 450px;
   z-index: 0;
 }
@@ -108,27 +95,16 @@ section.scratched-in {
 }
 
 div.lineup {
-  background-color: #dadaff;
+	background-color: #efddda;
   position: absolute;
 	user-select: none;
   top: 0;
   right: 0;
   width: 100%;
   height: 100%;
-  user-select: none;
-  padding-top: 20px;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
-div.lineup span {
-  padding: 20px;
-}
-
-div.lineup img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
 
 
 
@@ -140,15 +116,14 @@ div.lineup img {
     position:fixed;
     top:0;
     color: black;
-    padding: 100;
     overflow: scroll;
 }
 .left {
     left:0;
+		padding: 100;
 }
 .right {
     right:0;
-    /* background-color: #edada1; */
 }
 @media screen and (max-width: 900px) {
     .left, .right {
