@@ -4,4 +4,6 @@ lib
 include
 venv
 
+static/
+
 .DS_Store

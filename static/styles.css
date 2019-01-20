@@ -2,7 +2,7 @@ body {
 	font-family: Arial;
 	font-size: 16px;
 	line-height: 1.5;
-	overflow: hidden;
+	/* overflow: hidden; */
 	user-select: none;
 }
 
@@ -20,7 +20,7 @@ body {
     right:0;
     color: black;
     padding: 100;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 
 .desc {
@@ -61,6 +61,24 @@ div.cursor.is-down span {
   left: 100px;
 }
 
+.loader {
+	display: none;
+	float: left;
+	margin: 5px;
+	padding: 5px;
+}
+
+.error {
+	float: left;
+	margin: 5px;
+	padding: 5px;
+}
+
+.loader img {
+	width: 30px;
+	height: 30px;
+}
+
 canvas {
   position: absolute;
   top: 0;
@@ -77,7 +95,6 @@ div.pattern {
   width: 100%;
   height: 100%;
   background-color: #edada1;
-  background-image: url(test.png);
   background-size: 450px 450px;
   z-index: 0;
 }
@@ -101,8 +118,9 @@ div.lineup {
   top: 0;
   right: 0;
   width: 100%;
-  height: 100%;
   overflow-y: scroll;
+	padding-left: 50px;
+	padding-top: 30px;
 }
 
 
@@ -116,7 +134,7 @@ div.lineup {
     position:fixed;
     top:0;
     color: black;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 .left {
     left:0;
@@ -154,7 +172,7 @@ h1 {
   margin: 0 30px;
   text-justify: inter-word;
   padding-right: 0px;
-	height: 25%;
+	/* height: 25%; */
 	width: 80%;
 }
 
@@ -171,4 +189,14 @@ a:hover, a:active {
 input {
   height: 22px;
   font-size: 14px;
+}
+
+button {
+	height: 40px;
+	width: 100px;
+	background-color: #edada1;
+	color: #ffffff;
+	border-radius: 10px;
+	font-size: 16px;
+	float: left;
 }

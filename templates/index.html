@@ -8,7 +8,7 @@
   <meta name="description" content="Letter Boxed Solver">
   <meta name="author" content="Alice Liang">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <link rel="stylesheet" href="static/styles.css?timestamp=201901191936">
+  <link rel="stylesheet" href="static/styles.css?timestamp=201901192024">
   <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
 </head>
@@ -33,6 +33,10 @@
                   <input type='radio' name='num' value='2' checked='checked'>2
                   <input type='radio' name='num' value='3'>3 (slow)<p>
       <button type='button' id ='retrieve'>Solve</button>
+      <div class='loader'>
+        <img src='static/ajax-loader.gif'></img>
+      </div>
+      <div class='error'></div>
     </form>
     </div>
   </div>
@@ -60,30 +64,6 @@
 <!-- <script src="static/app.js?version=4"></script> -->
 
 <script>
-
-$(document).ready(function() {
-   $('#retrieve').click(function(){
-     console.log('here')
-       var l = $('#leftInput').val();
-       var t = $('#topInput').val();
-       var r = $('#rightInput').val();
-       var b = $('#bottomInput').val();
-       var num = $('input[name=num]:checked').val();
-
-       $.ajax({
-         url: "/transform",
-         type: "get",
-         data: {left: l, top: t, right: r, bottom: b, number: num},
-         success: function(response) {
-           console.log(response);
-         $("#results").show();
-         $("#results").html(response.html);
-        },
-        error: function(xhr) {
-          //Do Something to handle error
-     }
-     });
-   });
 
 // drawing
 
@@ -193,7 +173,49 @@ window.addEventListener("resize", function () {
   setupCanvas(canvasOut)
 })
 
-});
+
+$(document).ready(function() {
+   $('#retrieve').click(function(){
+
+     setupCanvas(canvasIn)
+     setupCanvas(canvasOut)
+     $('.pattern').css('background-image','');
+
+     $('.error').html('');
+     $('.loader').show();
+
+       var l = $('#leftInput').val();
+       var t = $('#topInput').val();
+       var r = $('#rightInput').val();
+       var b = $('#bottomInput').val();
+       var num = $('input[name=num]:checked').val();
+
+       $.ajax({
+         url: "/transform",
+         type: "get",
+         data: {left: l, top: t, right: r, bottom: b, number: num},
+         success: function(response) {
+
+           $('.loader').hide();
+
+           if (response.html == 'Please input 3 distinct letters per side!'
+               || response.html.includes('-word solutions found!')) {
+             $('.error').html(response.html);
+           }
+           else {
+             $('.pattern').css('background-image', 'url(static/reveal.png)');
+             $("#results").show();
+             $("#results").html(response.html);
+          }
+        },
+        error: function(xhr) {
+          //Do Something to handle error
+     }
+     });
+   });
+
+ });
+
 
 </script>
 

@@ -59,7 +59,7 @@ def display_answers(sets, num):
         num_map = {'1': 'one', '2': 'two', '3': 'three'}
         return "No " + num_map[num] + "-word solutions found!"
     else:
-        output = "<strong>Try these answers!</strong><p>"
+        output = "<strong><ul>Try these answers!</ul></strong><p>"
         for s in sets:
             output += "<ul>" + " — ".join(s) + "</ul>"
         return "<span>" + output + "</span>"
