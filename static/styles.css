@@ -121,6 +121,7 @@ div.lineup {
   overflow-y: scroll;
 	padding-left: 50px;
 	padding-top: 30px;
+	min-height: 100%;
 }
 
 

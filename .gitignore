@@ -4,6 +4,8 @@ lib
 include
 venv
 
-static/
+*.jpg
+*.psd
+*.png
 
 .DS_Store
