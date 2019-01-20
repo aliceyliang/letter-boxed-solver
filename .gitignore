@@ -6,6 +6,6 @@ venv
 
 *.jpg
 *.psd
-*.png
+static/pattern.png
 
 .DS_Store
