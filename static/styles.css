@@ -1,6 +1,6 @@
 body {
 	font-family: Arial;
-	font-size: 16px;
+	font-size: 17px;
 	line-height: 1.5;
 	/* overflow: hidden; */
 	user-select: none;
@@ -18,7 +18,7 @@ body {
     position:fixed;
     top:0;
     right:0;
-    color: black;
+    /* color: black; */
     padding: 100;
     overflow-y: scroll;
 }
@@ -124,23 +124,18 @@ div.lineup {
 	min-height: 100%;
 }
 
-
-
-
-/* new */
-
-.left, .right {
+.left {
     width:50%;
-    height:100%;
-    position:fixed;
+		/* height:100%; */
+    min-height:100vh;
+    position:relative;
     top:0;
     color: black;
     overflow-y: scroll;
-}
-.left {
     left:0;
 		padding: 100;
 }
+/*
 .right {
     right:0;
 }
@@ -154,11 +149,12 @@ div.lineup {
       bottom:0;
       top:auto;
     }
-}
+} */
 
 .entry {
   position: relative;
   margin: 30px;
+	padding-bottom: 40px;
 }
 
 h1 {
@@ -180,6 +176,7 @@ h1 {
 a:link, a:visited {
   text-decoration: none;
   color: black;
+	font-weight: bold;
 }
 
 a:hover, a:active {
@@ -200,4 +197,15 @@ button {
 	border-radius: 10px;
 	font-size: 16px;
 	float: left;
+}
+
+.footer {
+	position: absolute;
+	font-size: 12px;
+	margin-bottom: 30px;
+	margin-top: 100px;
+	/* bottom: 0; */
+	width: 100%;
+	text-align: center;
+	opacity: 0.7;
 }
