@@ -192,7 +192,8 @@ button {
 
 @media only screen
 and (min-device-width : 375px)
-and (max-device-width : 667px) {
+and (max-device-width : 667px)
+and (orientation : portrait) {
 	.left, .right {
 			left:0;
 			height:50%;
@@ -203,11 +204,15 @@ and (max-device-width : 667px) {
 		bottom:0;
 		top:auto;
 	}
+	h1 {
+		font-size: 40px;
+	}
 	.desc {
-		font-size: 12px;
+		font-size: 28px;
+		width: 90%;
 	}
 	form, .entry, button, input {
-		font-size: 30px;
+		font-size: 28px;
 	}
 	input {
 		height: 35px;
@@ -225,10 +230,11 @@ and (max-device-width : 667px) {
 	input[type=radio] {
 		width: 30px;
 		height: 30px;
+		border-radius: 10px;
 	}
 	input[type=text] {
 		height: 30px;
-		border-width: 5px;
+		border-width: 1px;
 	}
 	button {
 		width: 150px;
@@ -238,7 +244,8 @@ and (max-device-width : 667px) {
 
 @media only screen
 and (min-device-width : 320px)
-and (max-device-width : 568px) {
+and (max-device-width : 568px)
+and (orientation : portrait)  {
 	.left, .right {
 			left:0;
 			width:100%;
@@ -253,13 +260,14 @@ and (max-device-width : 568px) {
 		top:auto;
 	}
 	h1 {
-		font-size: 20px;
+		font-size: 40px;
 	}
 	.desc {
-		font-size: 13px;
+		font-size: 28px;
+		width: 90%;
 	}
 	form, .entry, button, input {
-		font-size: 30px;
+		font-size: 28px;
 	}
 	input {
 		height: 35px;
@@ -277,10 +285,11 @@ and (max-device-width : 568px) {
 	input[type=radio] {
 		width: 30px;
 		height: 30px;
+		border-radius: 10px;
 	}
 	input[type=text] {
 		height: 30px;
-		border-width: 5px;
+		border-width: 1px;
 	}
 	button {
 		width: 150px;
