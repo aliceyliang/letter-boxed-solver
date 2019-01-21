@@ -23,13 +23,6 @@ body {
     overflow-y: scroll;
 }
 
-.desc {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 50%;
-}
-
 div.cursor {
   position: absolute;
   top: 50%;
@@ -135,21 +128,6 @@ div.lineup {
     left:0;
 		padding: 100;
 }
-/*
-.right {
-    right:0;
-}
-@media screen and (max-width: 900px) {
-    .left, .right {
-        left:0;
-        height:50%;
-        width:100%;
-    }
-    .right {
-      bottom:0;
-      top:auto;
-    }
-} */
 
 .entry {
   position: relative;
@@ -169,7 +147,6 @@ h1 {
   margin: 0 30px;
   text-justify: inter-word;
   padding-right: 0px;
-	/* height: 25%; */
 	width: 80%;
 }
 
@@ -187,6 +164,8 @@ a:hover, a:active {
 input {
   height: 22px;
   font-size: 14px;
+	border-radius: 2px;
+	border-width: 1px;
 }
 
 button {
@@ -203,9 +182,108 @@ button {
 	position: absolute;
 	font-size: 12px;
 	margin-bottom: 30px;
-	margin-top: 100px;
-	/* bottom: 0; */
+	margin-top: 70px;
 	width: 100%;
 	text-align: center;
 	opacity: 0.7;
+}
+
+
+
+@media only screen
+and (min-device-width : 375px)
+and (max-device-width : 667px) {
+	.left, .right {
+			left:0;
+			height:50%;
+			width:100%;
+			overflow-y: scroll;
+	}
+	.right {
+		bottom:0;
+		top:auto;
+	}
+	.desc {
+		font-size: 12px;
+	}
+	form, .entry, button, input {
+		font-size: 30px;
+	}
+	input {
+		height: 35px;
+	}
+	p {
+		margin: 10px;
+	}
+	.pattern, canvas {
+		display: none;
+	}
+	.footer {
+		margin-top: 10px;
+		font-size: 20px;
+	}
+	input[type=radio] {
+		width: 30px;
+		height: 30px;
+	}
+	input[type=text] {
+		height: 30px;
+		border-width: 5px;
+	}
+	button {
+		width: 150px;
+		height: 50px;
+	}
+}
+
+@media only screen
+and (min-device-width : 320px)
+and (max-device-width : 568px) {
+	.left, .right {
+			left:0;
+			width:100%;
+			overflow-y: scroll;
+	}
+	.left {
+		height:60%;
+	}
+	.right {
+		height:40%;
+		bottom:0;
+		top:auto;
+	}
+	h1 {
+		font-size: 20px;
+	}
+	.desc {
+		font-size: 13px;
+	}
+	form, .entry, button, input {
+		font-size: 30px;
+	}
+	input {
+		height: 35px;
+	}
+	p {
+		margin: 10px;
+	}
+	.pattern, canvas {
+		display: none;
+	}
+	.footer {
+		margin-top: 10px;
+		font-size: 20px;
+	}
+	input[type=radio] {
+		width: 30px;
+		height: 30px;
+	}
+	input[type=text] {
+		height: 30px;
+		border-width: 5px;
+	}
+	button {
+		width: 150px;
+		height: 50px;
+	}
 }
