@@ -1,5 +1,7 @@
 # letter-boxed-solver
 
+Letter Boxed Solver for the game from The New York Times.
+
 ### Overview
 This is a small Flask app to find solutions for the game Letter Boxed from The New York Times. Live site at [letterboxed.aliceyliang.com](https://letterboxed.aliceyliang.com).
 

@@ -263,7 +263,7 @@ and (orientation : portrait)  {
 		font-size: 40px;
 	}
 	.desc {
-		font-size: 28px;
+		font-size: 0.8em;
 		width: 90%;
 	}
 	form, .entry, button, input {
@@ -309,6 +309,24 @@ and (orientation : landscape) {
 @media only screen
 and (min-device-width : 320px)
 and (max-device-width : 568px)
+and (orientation : landscape)  {
+	.pattern, canvas {
+		display: none;
+	}
+}
+
+@media only screen
+and (min-device-width : 768px)
+and (max-device-width : 1024px)
+and (orientation : portrait)  {
+	.pattern, canvas {
+		display: none;
+	}
+}
+
+@media only screen
+and (min-device-width : 1024px)
+and (max-device-width : 786px)
 and (orientation : landscape)  {
 	.pattern, canvas {
 		display: none;
