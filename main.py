@@ -64,6 +64,38 @@ def display_answers(sets, num):
             output += "<ul>" + " — ".join(s) + "</ul>"
         return "<span>" + output + "</span>"
 
+def display_answers_two_sets(easy_set, hard_set, num):
+    if easy_set == [] and hard_set == []:
+        print("no solutions")
+        num_map = {'1': 'one', '2': 'two', '3': 'three'}
+        return "No " + num_map[num] + "-word solutions found!"
+    # display all answers if only easy or only hard words
+    elif ((easy_set != [] and hard_set == []) \
+            or (easy_set == [] and hard_set != [])):
+        print("one solution set")
+        print("easy", easy_set)
+        print("hard", hard_set)
+        output = "<strong><ul>Try these answers!</ul></strong><p>"
+        sets = easy_set + hard_set
+        for s in sets:
+            output += "<ul>" + " — ".join(s) + "</ul>"
+        return "<span>" + output + "</span>"
+    # if hard and easy words, display two sets
+    else:
+        print("two solution sets")
+        # show easy answers on top
+        output = "<strong><ul>Try these answers with more common words!</ul></strong><p>"
+        for s in easy_set:
+            output += "<ul>" + " — ".join(s) + "</ul>"
+        output = "<span>" + output + "</span>"
+        # show hard answers on the bottom
+        output += "<span> <strong><ul>Try these answers with less common words!</ul></strong><p>"
+        for s in hard_set:
+            output += "<ul>" + " — ".join(s) + "</ul>"
+        output += "</span>"
+        # return all
+        return output
+
 def find_answers(wordset, chars, num):
     if num == "1":
         return one_word_solution(wordset, chars)
@@ -73,15 +105,26 @@ def find_answers(wordset, chars, num):
         return two_word_solution(wordset, chars)
 
 def solve_puzzle(pos, num):
+    # chars = set(pos.keys())
+    # wordset = get_words("words_alpha.txt", pos, chars)
+    # answers = find_answers(wordset, chars, num)
+    # # if no basic answers available, check more extensive list of words
+    # if answers == []:
+    #     print('here')
+    #     hard_wordset = get_words("words_alpha.txt", pos, chars)
+    #     answers = find_answers(hard_wordset, chars, num)
+    # return display_answers(answers, num)
+
     chars = set(pos.keys())
-    wordset = get_words("words.txt", pos, chars)
-    answers = find_answers(wordset, chars, num)
-    # if no basic answers available, check more extensive list of words
-    if answers == []:
-        print('here')
-        hard_wordset = get_words("words_alpha.txt", pos, chars)
-        answers = find_answers(hard_wordset, chars, num)
-    return display_answers(answers, num)
+
+    easy_wordset = get_words("words.txt", pos, chars)
+    easy_answers = find_answers(easy_wordset, chars, num)
+    hard_wordset = get_words("words_alpha.txt", pos, chars)
+    hard_answers = find_answers(hard_wordset, chars, num)
+
+    hard_answers = [x for x in hard_answers if x not in easy_answers]
+
+    return display_answers_two_sets(easy_answers, hard_answers, num)
 #
 # @app.route('/')
 # def home():

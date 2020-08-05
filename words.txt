@@ -54703,6 +54703,7 @@ ligatures
 ligaturing
 liger
 light
+lightbulb
 lighted
 lighten
 lightened
