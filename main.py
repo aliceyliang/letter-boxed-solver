@@ -15,10 +15,29 @@ def clean_letters(l, t, r, b):
     pos = {**left, **top, **right, **bottom}
     return pos
 
+#### This cleaning is previously applied to the word txt files
+## def clean_words(file):
+##     with open(file) as word_file:
+##         actual_words = list(word.strip().upper() for word in word_file)
+##         valid_words = [w for w in actual_words if len(w)>=3]
+##
+##         toss = []
+##         for word in valid_words:
+##             ## make sure letters don't repeat
+##             letters = list(word)
+##             num = 1
+##             while num < len(letters):
+##                 if (letters[num] == letters[num-1]):
+##                     toss.append(word)
+##                     num = len(letters)
+##                 else:
+##                     num += 1
+##         return [w for w in valid_words if w not in toss]
+
 def get_words(file, pos, chars):
     with open(file) as word_file:
         actual_words = list(word.strip().upper() for word in word_file)
-        valid_words = [w for w in actual_words if len(w)>=3 and set(w)-chars==set()]
+        valid_words = [w for w in actual_words if set(w)-chars==set()]
 
         toss = []
         for word in valid_words:
@@ -26,7 +45,7 @@ def get_words(file, pos, chars):
             letters = list(word)
             num = 1
             while num < len(letters):
-                if (pos[letters[num]] == pos[letters[num-1]]) or (letters[num] == letters[num-1]):
+                if (pos[letters[num]] == pos[letters[num-1]]):
                     toss.append(word)
                     num = len(letters)
                 else:
@@ -62,30 +81,27 @@ def three_word_solution(word_list, chars):
                     output.append([i,j,k])
     return output
 
+num_map = {'1': {'text': 'one', 'function': one_word_solution},
+           '2': {'text': 'two', 'function': two_word_solution},
+           '3': {'text': 'three', 'function': three_word_solution}}
+
+
 def display_answers(sets, num):
     if sets == []:
-        num_map = {'1': 'one', '2': 'two', '3': 'three'}
-        return "No " + num_map[num] + "-word solutions found!"
+        return "No " + num_map[num]['text'] + "-word solutions found!"
     else:
+        print(len(sets), " sets found!")
         output = ""
         for s in sets:
             output += "<ul>" + " — ".join(s) + "</ul>"
         return "<span>" + output + "</span>"
-
-def find_answers(wordset, chars, num):
-    if num == "1":
-        return one_word_solution(wordset, chars)
-    elif num == "3":
-        return three_word_solution(wordset, chars)
-    else:
-        return two_word_solution(wordset, chars)
 
 def solve_puzzle(pos, num, wordfile, exclude = []): # optionally exclude a list of answers
 
     chars = set(pos.keys())
 
     wordset = get_words(wordfile, pos, chars)
-    answers = find_answers(wordset, chars, num)
+    answers = num_map[num]['function'](wordset, chars)
     answers = [x for x in answers if x not in exclude]
 
     return answers, num
@@ -106,9 +122,9 @@ def index():
 def transform():
     number = request.args.get('number')
     pos = clean_letters('left','top','right','bottom')
+    print(pos)
     return get_html(pos, number, "words_easy.txt")
 
-#
 @app.route('/transform_hard')
 def transform_hard():
     number = request.args.get('number')
