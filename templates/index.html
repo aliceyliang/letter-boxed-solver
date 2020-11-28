@@ -208,14 +208,14 @@ $(document).ready(function() {
        var b = $('#bottomInput').val();
        var num = $('input[name=num]:checked').val();
 
+       // empty div with new request
+       $('#results').html('<div></div>');
+
        $.ajax({
          url: "/transform",
          type: "get",
          data: {left: l, top: t, right: r, bottom: b, number: num},
          success: function(response) {
-
-           // empty div with new request
-           $('#results').html('<div></div>');
 
            // Input error
            if (response.html == 'Please input 3 distinct letters per side!') {

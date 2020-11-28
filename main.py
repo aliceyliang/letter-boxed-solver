@@ -90,7 +90,6 @@ def display_answers(sets, num):
     if sets == []:
         return "No " + num_map[num]['text'] + "-word solutions found!"
     else:
-        print(len(sets), " sets found!")
         output = ""
         for s in sets:
             output += "<ul>" + " — ".join(s) + "</ul>"
@@ -122,7 +121,6 @@ def index():
 def transform():
     number = request.args.get('number')
     pos = clean_letters('left','top','right','bottom')
-    print(pos)
     return get_html(pos, number, "words_easy.txt")
 
 @app.route('/transform_hard')
