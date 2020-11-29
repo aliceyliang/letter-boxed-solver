@@ -7,10 +7,37 @@ def get_letters(side):
   let_list = list(let.upper())
   return dict((s, side) for s in let_list)
 
+def clean_letters(l, t, r, b):
+    left = get_letters(l)
+    top = get_letters(t)
+    right = get_letters(r)
+    bottom = get_letters(b)
+    pos = {**left, **top, **right, **bottom}
+    return pos
+
+#### This cleaning is previously applied to the word txt files
+## def clean_words(file):
+##     with open(file) as word_file:
+##         actual_words = list(word.strip().upper() for word in word_file)
+##         valid_words = [w for w in actual_words if len(w)>=3]
+##
+##         toss = []
+##         for word in valid_words:
+##             ## make sure letters don't repeat
+##             letters = list(word)
+##             num = 1
+##             while num < len(letters):
+##                 if (letters[num] == letters[num-1]):
+##                     toss.append(word)
+##                     num = len(letters)
+##                 else:
+##                     num += 1
+##         return [w for w in valid_words if w not in toss]
+
 def get_words(file, pos, chars):
     with open(file) as word_file:
         actual_words = list(word.strip().upper() for word in word_file)
-        valid_words = [w for w in actual_words if len(w)>=3 and set(w)-chars==set()]
+        valid_words = [w for w in actual_words if set(w)-chars==set()]
 
         toss = []
         for word in valid_words:
@@ -18,12 +45,16 @@ def get_words(file, pos, chars):
             letters = list(word)
             num = 1
             while num < len(letters):
-                if (pos[letters[num]] == pos[letters[num-1]]) or (letters[num] == letters[num-1]):
+                if (pos[letters[num]] == pos[letters[num-1]]):
                     toss.append(word)
                     num = len(letters)
                 else:
                     num += 1
         return [w for w in valid_words if w not in toss]
+
+# helper function
+def to_base(str):
+    return ''.join(sorted(set(str)))
 
 # find one word solutions
 def one_word_solution(word_list, chars):
@@ -43,117 +74,61 @@ def two_word_solution(word_list, chars):
 
 # find three word solutions
 def three_word_solution(word_list, chars):
-    output = []
-    for i in word_list:
-        seconds = [w for w in word_list if w[0] == i[-1] and w != i]
-        for j in seconds:
-            thirds = [w for w in word_list if w[0] == j[-1] and w != j and w != i]
-            for k in thirds:
-                triple = i + j + k
-                if set(triple) == chars:
-                    output.append([i,j,k])
-    return output
+    ab = [a+b for a in word_list for b in word_list if a[-1]==b[0]]
+    candidates = list(set([to_base(a)+a[-1] for a in ab]))
+    solutions = {a:b for a in candidates for b in word_list if set(a+b)==chars and a[-1]==b[0]}
+    ext = [[a+'-'+b,to_base(a+b)+b[-1]] for a in word_list for b in word_list if a!=b and a[-1]==b[0]]
+    vals = ['-'.join([e[0],solutions[e[1]]]) for e in ext if e[1] in solutions.keys()]
+    return [v.split('-') for v in vals]
+
+num_map = {'1': {'text': 'one', 'function': one_word_solution},
+           '2': {'text': 'two', 'function': two_word_solution},
+           '3': {'text': 'three', 'function': three_word_solution}}
+
 
 def display_answers(sets, num):
     if sets == []:
-        num_map = {'1': 'one', '2': 'two', '3': 'three'}
-        return "No " + num_map[num] + "-word solutions found!"
+        return "No " + num_map[num]['text'] + "-word solutions found!"
     else:
-        output = "<strong><ul>Try these answers!</ul></strong><p>"
+        output = ""
         for s in sets:
             output += "<ul>" + " — ".join(s) + "</ul>"
         return "<span>" + output + "</span>"
 
-def display_answers_two_sets(easy_set, hard_set, num):
-    if easy_set == [] and hard_set == []:
-        print("no solutions")
-        num_map = {'1': 'one', '2': 'two', '3': 'three'}
-        return "No " + num_map[num] + "-word solutions found!"
-    # display all answers if only easy or only hard words
-    elif ((easy_set != [] and hard_set == []) \
-            or (easy_set == [] and hard_set != [])):
-        print("one solution set")
-        print("easy", easy_set)
-        print("hard", hard_set)
-        output = "<strong><ul>Try these answers!</ul></strong><p>"
-        sets = easy_set + hard_set
-        for s in sets:
-            output += "<ul>" + " — ".join(s) + "</ul>"
-        return "<span>" + output + "</span>"
-    # if hard and easy words, display two sets
-    else:
-        print("two solution sets")
-        # show easy answers on top
-        output = "<strong><ul>Try these answers with more common words!</ul></strong><p>"
-        for s in easy_set:
-            output += "<ul>" + " — ".join(s) + "</ul>"
-        output = "<span>" + output + "</span>"
-        # show hard answers on the bottom
-        output += "<span> <strong><ul>Try these answers with less common words!</ul></strong><p>"
-        for s in hard_set:
-            output += "<ul>" + " — ".join(s) + "</ul>"
-        output += "</span>"
-        # return all
-        return output
-
-def find_answers(wordset, chars, num):
-    if num == "1":
-        return one_word_solution(wordset, chars)
-    elif num == "3":
-        return three_word_solution(wordset, chars)
-    else:
-        return two_word_solution(wordset, chars)
-
-def solve_puzzle(pos, num):
-    # chars = set(pos.keys())
-    # wordset = get_words("words_alpha.txt", pos, chars)
-    # answers = find_answers(wordset, chars, num)
-    # # if no basic answers available, check more extensive list of words
-    # if answers == []:
-    #     print('here')
-    #     hard_wordset = get_words("words_alpha.txt", pos, chars)
-    #     answers = find_answers(hard_wordset, chars, num)
-    # return display_answers(answers, num)
+def solve_puzzle(pos, num, wordfile, exclude = []): # optionally exclude a list of answers
 
     chars = set(pos.keys())
 
-    easy_wordset = get_words("words.txt", pos, chars)
-    easy_answers = find_answers(easy_wordset, chars, num)
-    hard_wordset = get_words("words_alpha.txt", pos, chars)
-    hard_answers = find_answers(hard_wordset, chars, num)
+    wordset = get_words(wordfile, pos, chars)
+    answers = num_map[num]['function'](wordset, chars)
+    answers = [x for x in answers if x not in exclude]
 
-    hard_answers = [x for x in hard_answers if x not in easy_answers]
+    return answers, num
 
-    return display_answers_two_sets(easy_answers, hard_answers, num)
-#
-# @app.route('/')
-# def home():
-#     return "hello hello"
-
-@app.route('/', methods=['GET','POST'])
-def index():
-    # error = None
-    # if request.method == 'POST':
-    #     return request.form['text']
-    return render_template('index.html')
-
-# http://127.0.0.1:5000/transform?left=HAO&top=IED&right=PMT&bottom=UNR
-# humanitarian notepad
-
-#
-@app.route('/transform')
-def transform():
-    left = get_letters('left')
-    top = get_letters('top')
-    right = get_letters('right')
-    bottom = get_letters('bottom')
-    number = request.args.get('number')
-    pos = {**left, **top, **right, **bottom}
+def get_html(pos, number, wordfile, exclude = []):
     if len(pos)==12:
-        result = solve_puzzle(pos, number)
+        answers, num = solve_puzzle(pos, number, wordfile, exclude)
+        result = display_answers(answers,num)
         return jsonify({'html': str(result)})
     else:
         return jsonify({'html': "Please input 3 distinct letters per side!"})
+
+@app.route('/', methods=['GET','POST'])
+def index():
+    return render_template('index.html')
+
+@app.route('/transform')
+def transform():
+    number = request.args.get('number')
+    pos = clean_letters('left','top','right','bottom')
+    return get_html(pos, number, "words_easy.txt")
+
+@app.route('/transform_hard')
+def transform_hard():
+    number = request.args.get('number')
+    pos = clean_letters('left','top','right','bottom')
+    easy_answers, num = solve_puzzle(pos, number, "words_easy.txt")
+    return get_html(pos, number, "words_hard.txt", exclude=easy_answers)
 
 if __name__ == "__main__":
     app.run(debug=True)

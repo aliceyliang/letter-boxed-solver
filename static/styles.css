@@ -72,6 +72,15 @@ div.cursor.is-down span {
 	height: 30px;
 }
 
+.find {
+	margin-top: 20px;
+}
+
+.find-loader img {
+	width: 30px;
+	height: 30px;
+}
+
 canvas {
   position: absolute;
   top: 0;
