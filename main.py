@@ -52,34 +52,26 @@ def get_words(file, pos, chars):
                     num += 1
         return [w for w in valid_words if w not in toss]
 
+# helper function
+def to_base(str):
+    return ''.join(sorted(set(str)))
+
 # find one word solutions
 def one_word_solution(word_list, chars):
     return [w for w in word_list if set(w) == chars]
 
 # find two word solutions
 def two_word_solution(word_list, chars):
-    output = []
-    for word in word_list:
-        last = word[len(word)-1]
-        matches = [w for w in word_list if w[0] == last and w!= word]
-        for m in matches:
-            pair = word + m
-            if set(pair) == chars:
-                output.append([word,m])
-    return output
+    return [[a,b] for a in word_list for b in word_list if set(a+b)==chars and a[-1]==b[0]]
 
 # find three word solutions
 def three_word_solution(word_list, chars):
-    output = []
-    for i in word_list:
-        seconds = [w for w in word_list if w[0] == i[-1] and w != i]
-        for j in seconds:
-            thirds = [w for w in word_list if w[0] == j[-1] and w != j and w != i]
-            for k in thirds:
-                triple = i + j + k
-                if set(triple) == chars:
-                    output.append([i,j,k])
-    return output
+    ab = [a+b for a in word_list for b in word_list if a[-1]==b[0]]
+    candidates = list(set([to_base(a)+a[-1] for a in ab]))
+    solutions = {a:b for a in candidates for b in word_list if set(a+b)==chars and a[-1]==b[0]}
+    ext = [[a+'-'+b,to_base(a+b)+b[-1]] for a in word_list for b in word_list if a!=b and a[-1]==b[0]]
+    vals = ['-'.join([e[0],solutions[e[1]]]) for e in ext if e[1] in solutions.keys()]
+    return [v.split('-') for v in vals]
 
 num_map = {'1': {'text': 'one', 'function': one_word_solution},
            '2': {'text': 'two', 'function': two_word_solution},
