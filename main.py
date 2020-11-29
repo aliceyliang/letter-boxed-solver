@@ -62,7 +62,15 @@ def one_word_solution(word_list, chars):
 
 # find two word solutions
 def two_word_solution(word_list, chars):
-    return [[a,b] for a in word_list for b in word_list if set(a+b)==chars and a[-1]==b[0]]
+    output = []
+    for word in word_list:
+        last = word[len(word)-1]
+        matches = [w for w in word_list if w[0] == last and w!= word]
+        for m in matches:
+            pair = word + m
+            if set(pair) == chars:
+                output.append([word,m])
+    return output
 
 # find three word solutions
 def three_word_solution(word_list, chars):
