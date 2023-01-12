@@ -49,7 +49,7 @@
       Solve in this # of words: <input type='radio' name='num' value='1'>1 (rare)
                   <input type='radio' name='num' value='2' checked='checked'>2
                   <input type='radio' name='num' value='3'>3 (slow)<p>
-      <button type='button' id ='retrieve'>Solve</button>
+      <button type='button' id ='retrieve'><b>Solve</b></button>
       <div class='loader'>
         <img src='static/ajax-loader.gif'></img>
       </div>
@@ -203,7 +203,7 @@ $(document).ready(function() {
   $('#autoPopulate').click(function(){
 
     console.log("hello");
-    
+
     $.ajax({
       url: "/populate",
       type: "get",
