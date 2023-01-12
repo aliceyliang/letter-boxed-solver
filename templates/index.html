@@ -34,9 +34,15 @@
       But you might get frustrated and need the answers from time to time!
     </div>
     <div class="entry">
-
+    
+    <div>
+      <button type='button' id ='autoPopulate' style='width:auto'>Autofill with today's puzzle</button>
+      <br></br>
+      <p></p>
+    </div>
+    
     <form>
-      Left: <input type='text' maxlength='3' id='leftInput'><p>
+      Left: <input type='text' maxlength='3' id='leftInput'><p></p>
       Top: <input type='text' maxlength='3' id='topInput'><p>
       Right: <input type='text' maxlength='3' id='rightInput'><p>
       Bottom: <input type='text' maxlength='3' id='bottomInput'><p>
@@ -193,6 +199,26 @@ window.addEventListener("resize", function () {
 
 
 $(document).ready(function() {
+
+  $('#autoPopulate').click(function(){
+
+    console.log("hello");
+    
+    $.ajax({
+      url: "/populate",
+      type: "get",
+      success: function(res) {
+
+        $('#leftInput').val(res[3]);
+        $('#topInput').val(res[0]);
+        $('#rightInput').val(res[1]);
+        $('#bottomInput').val(res[2]);
+     
+      }
+    });
+
+  });
+
    $('#retrieve').click(function(){
 
      setupCanvas(canvasIn)
