@@ -33,7 +33,7 @@ def clean_letters(l, t, r, b):
 
 def get_words(file, pos, chars):
     with open(file) as word_file:
-        actual_words = list(word.strip().upper() for word in word_file)
+        actual_words = sorted(set(list(word.strip().upper() for word in word_file) + todays_metadata['nyt_solution']))
         valid_words = [w for w in actual_words if set(w)-chars==set()]
 
         toss = []
