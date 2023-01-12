@@ -13,6 +13,8 @@ def get_todays_metadata():
     todays_metadata = json.loads(r.text[start_parens:end_string]+"}")
     return {'sides': todays_metadata['sides'], 'nyt_solution': todays_metadata['ourSolution']}
 
+todays_metadata = get_todays_metadata() # run function on load
+
 ### FUNCTIONS FOR SOLVING THE PUZZLE ### 
 
 def get_letters(side):
@@ -82,12 +84,16 @@ num_map = {'1': {'text': 'one', 'function': one_word_solution},
 
 
 def display_answers(sets, num):
+    nyt_solution_today = todays_metadata['nyt_solution']
     if sets == []:
         return "No " + num_map[num]['text'] + "-word solutions found!"
     else:
         output = ""
         for s in sets:
-            output += "<ul>" + " — ".join(s) + "</ul>"
+            if s == nyt_solution_today:
+                output += "<ul>" + " — ".join(s) + " ⭐️ <i><b>NYT Solution</b></i>" +  "</ul>"
+            else:
+                output += "<ul>" + " — ".join(s) + "</ul>"
         return "<span>" + output + "</span>"
 
 def solve_puzzle(pos, num, wordfile, exclude = []): # optionally exclude a list of answers
@@ -116,7 +122,7 @@ def index():
 
 @app.route('/populate')
 def auto_populate():
-    return get_todays_metadata()['sides']
+    return todays_metadata['sides']
 
 @app.route('/transform')
 def transform():
