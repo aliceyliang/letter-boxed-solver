@@ -1,6 +1,22 @@
 from flask import Flask, render_template, redirect, url_for, request, jsonify
 app = Flask(__name__)
 
+### GET NYT METADATA FOR TODAY'S PUZZLE ###
+
+def get_todays_metadata():
+    import requests, json
+    r = requests.get("https://www.nytimes.com/puzzles/letter-boxed")
+    # identify gameData from console
+    start_string = r.text.index("window.gameData")
+    start_parens = start_string + r.text[start_string:].index("{")
+    end_string = start_parens+ r.text[start_parens:].index(",\"dictionary")
+    todays_metadata = json.loads(r.text[start_parens:end_string]+"}")
+    return {'sides': todays_metadata['sides'], 'nyt_solution': todays_metadata['ourSolution']}
+
+todays_metadata = get_todays_metadata() # run function on load
+
+### FUNCTIONS FOR SOLVING THE PUZZLE ### 
+
 def get_letters(side):
   let = request.args.get(side)
   let = ''.join(filter(str.isalpha, let))
@@ -15,28 +31,9 @@ def clean_letters(l, t, r, b):
     pos = {**left, **top, **right, **bottom}
     return pos
 
-#### This cleaning is previously applied to the word txt files
-## def clean_words(file):
-##     with open(file) as word_file:
-##         actual_words = list(word.strip().upper() for word in word_file)
-##         valid_words = [w for w in actual_words if len(w)>=3]
-##
-##         toss = []
-##         for word in valid_words:
-##             ## make sure letters don't repeat
-##             letters = list(word)
-##             num = 1
-##             while num < len(letters):
-##                 if (letters[num] == letters[num-1]):
-##                     toss.append(word)
-##                     num = len(letters)
-##                 else:
-##                     num += 1
-##         return [w for w in valid_words if w not in toss]
-
 def get_words(file, pos, chars):
     with open(file) as word_file:
-        actual_words = list(word.strip().upper() for word in word_file)
+        actual_words = sorted(set(list(word.strip().upper() for word in word_file) + todays_metadata['nyt_solution']))
         valid_words = [w for w in actual_words if set(w)-chars==set()]
 
         toss = []
@@ -87,12 +84,16 @@ num_map = {'1': {'text': 'one', 'function': one_word_solution},
 
 
 def display_answers(sets, num):
+    nyt_solution_today = todays_metadata['nyt_solution']
     if sets == []:
         return "No " + num_map[num]['text'] + "-word solutions found!"
     else:
         output = ""
         for s in sets:
-            output += "<ul>" + " — ".join(s) + "</ul>"
+            if s == nyt_solution_today:
+                output += "<ul>" + " — ".join(s) + " ⭐️ <i><b>NYT Solution</b></i>" +  "</ul>"
+            else:
+                output += "<ul>" + " — ".join(s) + "</ul>"
         return "<span>" + output + "</span>"
 
 def solve_puzzle(pos, num, wordfile, exclude = []): # optionally exclude a list of answers
@@ -113,9 +114,15 @@ def get_html(pos, number, wordfile, exclude = []):
     else:
         return jsonify({'html': "Please input 3 distinct letters per side!"})
 
+### RUN APP ON FLASK ### 
+
 @app.route('/', methods=['GET','POST'])
 def index():
     return render_template('index.html')
+
+@app.route('/populate')
+def auto_populate():
+    return todays_metadata['sides']
 
 @app.route('/transform')
 def transform():
