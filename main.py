@@ -1,5 +1,12 @@
 from flask import Flask, render_template, redirect, url_for, request, jsonify
+from flask_caching import Cache
+import json
 app = Flask(__name__)
+
+### CACHING ###
+
+app.config['CACHE_TYPE'] = 'simple'
+cache = Cache(app)
 
 ### GET NYT METADATA FOR TODAY'S PUZZLE ###
 
@@ -32,6 +39,7 @@ def clean_letters(l, t, r, b):
     return pos
 
 def get_words(file, pos, chars):
+
     with open(file) as word_file:
         actual_words = sorted(set(list(word.strip().upper() for word in word_file) + todays_metadata['nyt_solution']))
         valid_words = [w for w in actual_words if set(w)-chars==set()]
@@ -98,10 +106,17 @@ def display_answers(sets, num):
 
 def solve_puzzle(pos, num, wordfile, exclude = []): # optionally exclude a list of answers
 
-    chars = set(pos.keys())
+    # check for cached solution if already exists
+    cache_key = wordfile + str(num) + json.dumps(pos)
+    cached_answers = cache.get(cache_key)
+    if cached_answers is not None:
+        answers = cached_answers
+    else:
+        chars = set(pos.keys())
+        wordset = get_words(wordfile, pos, chars)
+        answers = num_map[num]['function'](wordset, chars)
+        cache.set(cache_key, answers, timeout=86400) 
 
-    wordset = get_words(wordfile, pos, chars)
-    answers = num_map[num]['function'](wordset, chars)
     answers = [x for x in answers if x not in exclude]
 
     return answers, num
