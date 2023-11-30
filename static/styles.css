@@ -1,6 +1,6 @@
 body {
 	font-family: Arial;
-	font-size: 17px;
+	font-size: 1.2rem;
 	line-height: 1.5;
 	/* overflow: hidden; */
 	user-select: none;
@@ -128,14 +128,13 @@ div.lineup {
 
 .left {
     width:50%;
-		/* height:100%; */
     min-height:100vh;
     position:relative;
     top:0;
     color: black;
-    overflow-y: scroll;
+    overflow: hidden;
     left:0;
-		padding: 100;
+	padding: 100;
 }
 
 .entry {
@@ -145,9 +144,8 @@ div.lineup {
 }
 
 h1 {
-	position: relative;
+  position: relative;
   margin: 30px;
-  font-size: 30px;
   font-weight: bold;
 }
 
@@ -191,7 +189,7 @@ button {
 	position: absolute;
 	font-size: 12px;
 	margin-bottom: 30px;
-	margin-top: 70px;
+	margin-top: 10px;
 	width: 100%;
 	text-align: center;
 	opacity: 0.7;
@@ -217,7 +215,7 @@ and (orientation : portrait) {
 		font-size: 40px;
 	}
 	.desc {
-		font-size: 28px;
+		font-size: 1.75rem;
 		width: 90%;
 	}
 	form, .entry, button, input {
@@ -268,11 +266,8 @@ and (orientation : portrait)  {
 		bottom:0;
 		top:auto;
 	}
-	h1 {
-		font-size: 40px;
-	}
 	.desc {
-		font-size: 0.8em;
+		font-size: 1.75rem;
 		width: 90%;
 	}
 	form, .entry, button, input {
