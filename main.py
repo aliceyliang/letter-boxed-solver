@@ -81,9 +81,28 @@ def two_word_solution(word_list, chars):
 def three_word_solution(word_list, chars):
     ab = [a+b for a in word_list for b in word_list if a[-1]==b[0]]
     candidates = list(set([to_base(a)+a[-1] for a in ab]))
-    solutions = {a:b for a in candidates for b in word_list if set(a+b)==chars and a[-1]==b[0]}
+    # solutions = {a:b for a in candidates for b in word_list if set(a+b)==chars and a[-1]==b[0]}
+    
+    solutions = {}
+    for a in candidates:
+        for b in word_list:
+
+            if set(a+b) == chars and a[-1] == b[0]:
+                if a not in solutions:
+                    solutions[a] = []
+
+                solutions[a].append(b)
+
     ext = [[a+'-'+b,to_base(a+b)+b[-1]] for a in word_list for b in word_list if a!=b and a[-1]==b[0]]
-    vals = ['-'.join([e[0],solutions[e[1]]]) for e in ext if e[1] in solutions.keys()]
+    # vals = ['-'.join([e[0],solutions[e[1]]]) for e in ext if e[1] in solutions.keys()]
+
+    vals = []
+    for e in ext:
+        if e[1] in solutions:
+            for c in solutions[e[1]]:
+                vals.append('-'.join([e[0], c]))
+
+    
     return [v.split('-') for v in vals]
 
 num_map = {'1': {'text': 'one', 'function': one_word_solution},
