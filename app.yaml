@@ -6,3 +6,9 @@ handlers:
 - url: /.*
   script: auto
   
+env_variables:
+  REDISHOST: '10.236.247.51'
+  REDISPORT: '6379'
+
+vpc_access_connector:
+  name: projects/letter-boxed-solver/locations/us-east1/connectors/cache-connector

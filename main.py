@@ -1,12 +1,14 @@
 from flask import Flask, render_template, redirect, url_for, request, jsonify
-from flask_caching import Cache
 import json
+import os
+import redis
+
 app = Flask(__name__)
 
 ### CACHING ###
-
-app.config['CACHE_TYPE'] = 'simple'
-cache = Cache(app)
+redis_host = os.environ.get('REDISHOST', 'localhost')
+redis_port = int(os.environ.get('REDISPORT', 6379))
+redis_client = redis.Redis(host=redis_host, port=redis_port)
 
 ### GET NYT METADATA FOR TODAY'S PUZZLE ###
 
@@ -108,14 +110,14 @@ def solve_puzzle(pos, num, wordfile, exclude = []): # optionally exclude a list 
 
     # check for cached solution if already exists
     cache_key = wordfile + str(num) + json.dumps(pos)
-    cached_answers = cache.get(cache_key)
+    cached_answers = redis_client.get(cache_key)
     if cached_answers is not None:
-        answers = cached_answers
+        answers = json.loads(cached_answers)
     else:
         chars = set(pos.keys())
         wordset = get_words(wordfile, pos, chars)
         answers = num_map[num]['function'](wordset, chars)
-        cache.set(cache_key, answers, timeout=86400) 
+        redis_client.set(cache_key, json.dumps(answers), ex=60*60*24)
 
     answers = [x for x in answers if x not in exclude]
 
