@@ -1,14 +1,18 @@
-from flask import Flask, render_template, redirect, url_for, request, jsonify
-import json
+from flask import Flask, render_template, request, jsonify
+from flask_caching import Cache
 import os
-import redis
 
 app = Flask(__name__)
 
 ### CACHING ###
-redis_host = os.environ.get('REDISHOST', 'localhost')
-redis_port = int(os.environ.get('REDISPORT', 6379))
-redis_client = redis.Redis(host=redis_host, port=redis_port)
+config = {
+    "CACHE_TYPE": "RedisCache",
+    "CACHE_DEFAULT_TIMEOUT": 86400, # 1 day
+    "CACHE_REDIS_HOST": os.environ.get('REDISHOST', 'localhost'),
+    "CACHE_REDIS_PORT": int(os.environ.get('REDISPORT', 6379))
+}
+app.config.from_mapping(config)
+cache = Cache(app)
 
 ### GET NYT METADATA FOR TODAY'S PUZZLE ###
 
@@ -107,18 +111,10 @@ def display_answers(sets, num):
         return "<span>" + output + "</span>"
 
 def solve_puzzle(pos, num, wordfile, exclude = []): # optionally exclude a list of answers
-
-    # check for cached solution if already exists
-    cache_key = wordfile + str(num) + json.dumps(pos)
-    cached_answers = redis_client.get(cache_key)
-    if cached_answers is not None:
-        answers = json.loads(cached_answers)
-    else:
-        chars = set(pos.keys())
-        wordset = get_words(wordfile, pos, chars)
-        answers = num_map[num]['function'](wordset, chars)
-        redis_client.set(cache_key, json.dumps(answers), ex=60*60*24)
-
+    chars = set(pos.keys())
+    wordset = get_words(wordfile, pos, chars)
+    answers = num_map[num]['function'](wordset, chars)
+    
     answers = [x for x in answers if x not in exclude]
 
     return answers, num
@@ -141,14 +137,27 @@ def index():
 def auto_populate():
     return todays_metadata['sides']
 
+def make_cache_key_maker(route):
+    def make_cache_key():
+        number = request.args.get('number')
+        pos = clean_letters('left','top','right','bottom')
+        left = sorted([k for k, v in pos.items() if v == 'left'])
+        top = sorted([k for k, v in pos.items() if v == 'top'])
+        right = sorted([k for k, v in pos.items() if v == 'right'])
+        bottom = sorted([k for k, v in pos.items() if v == 'bottom'])
+        all = "|".join(sorted(["".join(left), "".join(top), "".join(right), "".join(bottom)]))
+        return ",".join([route, number, all])
+    return make_cache_key
+
 @app.route('/transform')
+@cache.cached(make_cache_key=make_cache_key_maker("/transform"))
 def transform():
     number = request.args.get('number')
     pos = clean_letters('left','top','right','bottom')
     return get_html(pos, number, "words_easy.txt")
 
 @app.route('/transform_hard')
-def transform_hard():
+def transform_hard(make_cache_key=make_cache_key_maker("/transform_hard")):
     number = request.args.get('number')
     pos = clean_letters('left','top','right','bottom')
     easy_answers, num = solve_puzzle(pos, number, "words_easy.txt")
