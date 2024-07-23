@@ -157,7 +157,8 @@ def transform():
     return get_html(pos, number, "words_easy.txt")
 
 @app.route('/transform_hard')
-def transform_hard(make_cache_key=make_cache_key_maker("/transform_hard")):
+@cache.cached(make_cache_key=make_cache_key_maker("/transform_hard"))
+def transform_hard():
     number = request.args.get('number')
     pos = clean_letters('left','top','right','bottom')
     easy_answers, num = solve_puzzle(pos, number, "words_easy.txt")
