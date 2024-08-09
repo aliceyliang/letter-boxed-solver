@@ -150,14 +150,14 @@ def make_cache_key_maker(route):
     return make_cache_key
 
 @app.route('/transform')
-@cache.cached(make_cache_key=make_cache_key_maker("/transform"))
+@cache.cached(make_cache_key=make_cache_key_maker("transform"))
 def transform():
     number = request.args.get('number')
     pos = clean_letters('left','top','right','bottom')
     return get_html(pos, number, "words_easy.txt")
 
 @app.route('/transform_hard')
-@cache.cached(make_cache_key=make_cache_key_maker("/transform_hard"))
+@cache.cached(make_cache_key=make_cache_key_maker("transform_hard"))
 def transform_hard():
     number = request.args.get('number')
     pos = clean_letters('left','top','right','bottom')

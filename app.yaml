@@ -14,6 +14,7 @@ vpc_access_connector:
   name: projects/letter-boxed-solver/locations/us-east1/connectors/cache-connector
 
 automatic_scaling:
-  max_instances: 5
-  target_cpu_utilization: 0.75
-  target_throughput_utilization: 0.75
+  max_instances: 4
+  target_cpu_utilization: 0.8
+  target_throughput_utilization: 0.8
+  min_pending_latency: 250ms
